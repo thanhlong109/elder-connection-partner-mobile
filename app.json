@@ -3,7 +3,6 @@
     "name": "elder-connection-partner-mobile",
     "slug": "elder-connection-partner-mobile",
     "version": "1.0.0",
-
     "scheme": "elder-connection-partner-mobile",
     "web": {
       "bundler": "metro",
@@ -21,21 +20,19 @@
     ],
     "experiments": {
       "typedRoutes": true,
-
       "tsconfigPaths": true
     },
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -43,6 +40,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.thanhlong109.elderconnectionpartnermobile"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0c685c5f-aa1e-4c74-85f1-9b0df74e629a"
       }
     }
   }
