@@ -60,9 +60,10 @@ const CustomCarousel = forwardRef<CustomCarouselRef, CustomCarouselProps>(({ sli
         ref={sliderRef}
         keyExtractor={(_, index) => index.toString()}
       />
-      <View className="flex-row justify-center gap-8">
+      <View className=" flex-row justify-center gap-8">
         {slider.map((_, index) => (
           <View
+            key={index}
             className={`h-6 w-6 rounded-full ${currentIndex === index ? 'bg-primary' : 'bg-[#C7D6FB]'}`}
           />
         ))}

@@ -9,6 +9,8 @@ export interface FormFieldProps {
   handleChangeText: (text: string) => void;
   otherStyles?: string;
   secureTextEntry?: boolean;
+  textHelper?: string;
+  borderStyle?: string;
 }
 
 const FormField = ({
@@ -18,17 +20,22 @@ const FormField = ({
   otherStyles = '',
   secureTextEntry = false,
   title = '',
+  textHelper = '',
+  borderStyle = '',
 }: FormFieldProps) => {
   const [showPassword, setshowPassword] = useState<boolean>(false);
   return (
-    <View className={`space-y-2 ${otherStyles}`}>
-      <Text className="font-pmedium text-gray-100">{title}</Text>
-      <View className="bg-gray focus:border-secondary h-16 w-full flex-row items-center rounded-2xl border-2 border-[#7D8FAB] px-4 ">
+    <View className={`space-y-1 ${otherStyles}`}>
+      <View>
+        <Text className="font-pmedium ">{title}</Text>
+        <Text className=" font-pregular text-sm italic ">{textHelper}</Text>
+      </View>
+      <View
+        className={`mt-1 h-14 w-full flex-row items-center rounded-full border-[1px] border-black bg-white px-6 focus:border-secondary ${borderStyle}`}>
         <TextInput
-          className="font-psemibold flex-1 text-base text-[#7D8FAB]"
+          className="flex-1 font-psemibold text-base "
           value={value}
           placeholder={placeholder}
-          placeholderTextColor="#7D8FAB"
           onChangeText={handleChangeText}
           secureTextEntry={secureTextEntry && !showPassword}
         />

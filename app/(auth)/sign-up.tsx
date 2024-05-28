@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { Link, router } from 'expo-router';
 import { SignInForm } from '~/types/auth.type';
@@ -11,6 +11,8 @@ import { images } from '~/constants/images';
 import CustomCarousel, { CustomCarouselRef } from '~/components/CustomCarousel';
 import Checkbox from 'expo-checkbox';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RadioGroup, RadioButton, View, Button } from 'react-native-ui-lib';
+import colors from '~/constants/colors';
 
 const postList = [
   'Quận 1',
@@ -33,6 +35,8 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
   });
+
+  const [gender, setGender] = useState('male');
 
   const [selected, setSelected] = useState<string[]>([]);
   const handleChoiseOptionPress = (pos: string) => {
@@ -61,7 +65,7 @@ const SignUp = () => {
           className="absolute h-[300px] w-2/3"
           resizeMode="stretch"
         />
-        <View className="w-full justify-around">
+        <ScrollView contentContainerStyle={{ justifyContent: 'space-around' }} className="w-full">
           <CustomCarousel
             ref={carouselRef}
             slider={[
@@ -102,24 +106,63 @@ const SignUp = () => {
                 </View>
               </View>,
               <View className="h-fit px-6">
-                <View className="mx-4 my-6 rounded-3xl bg-white p-8 shadow-sm">
+                <View className="mx-4 my-6 gap-6 rounded-3xl bg-white p-8 shadow-sm">
                   <FormField
                     title="Họ và tên"
                     value=""
                     placeholder="Nguyễn văn A"
                     handleChangeText={() => {}}
                   />
-                  <View className="flex-row">
+                  <View className="flex-row justify-between">
                     <Text className="font-pmedium">Giới tính</Text>
-                    <View>
-                      <Text>Nam</Text>
-                    </View>
+                    <RadioGroup
+                      initialValue={gender}
+                      onValueChange={(value: string) => setGender(value)}>
+                      <View row className="gap-6">
+                        <RadioButton color="#333" value={'male'} label={'Nam'} />
+                        <RadioButton color="#333" value={'female'} label={'Nữ'} />
+                      </View>
+                    </RadioGroup>
                   </View>
+                  <FormField
+                    title="Số CMND/CCCD"
+                    value=""
+                    placeholder="123456789101"
+                    handleChangeText={() => {}}
+                  />
+                  <FormField
+                    title="Số điện thoại"
+                    value=""
+                    placeholder="0987654321"
+                    handleChangeText={() => {}}
+                  />
+                  <FormField
+                    title="Mật khẩu (để đăng nhập lần sau)"
+                    value=""
+                    placeholder="Ít nhất 6 ký tự"
+                    textHelper="Mật khẩu Phải chứa 6-12 ký tự và không có khoảng cách"
+                    handleChangeText={() => {}}
+                    secureTextEntry
+                  />
+                  <FormField
+                    title="Mã giới thiệu (nếu có)"
+                    value=""
+                    placeholder="Mã giới thiệu"
+                    handleChangeText={() => {}}
+                  />
+                  <Button
+                    label="Gửi Đăng ký"
+                    onPress={() => router.push('sign-in')}
+                    iconOnRight
+                    backgroundColor={colors.primary}
+                    labelStyle={{ marginRight: 10, marginVertical: 5, color: '#333' }}
+                    iconSource={() => <AntDesign name="arrowright" size={24} color="#333" />}
+                  />
                 </View>
               </View>,
             ]}
           />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );
