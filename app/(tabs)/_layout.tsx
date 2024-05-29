@@ -23,9 +23,7 @@ const TabsLayout = () => {
           name="home"
           options={{
             tabBarLabel: 'Trang chủ',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="work-outline" size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
             headerShown: false,
           }}
         />
@@ -34,7 +32,7 @@ const TabsLayout = () => {
           options={{
             tabBarLabel: 'Ca làm việc',
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="clipboard-list-outline" size={size} color={color} />
+              <MaterialIcons name="work-outline" size={size} color={color} />
             ),
             headerShown: false,
           }}
@@ -54,9 +52,7 @@ const TabsLayout = () => {
           name="profile"
           options={{
             tabBarLabel: 'Tài khoản',
-            tabBarIcon: ({ color, size }) => (
-              <FontAwesome5 name="user-circle" size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <AntDesign name="user" size={size} color={color} />,
             headerShown: false,
           }}
         />

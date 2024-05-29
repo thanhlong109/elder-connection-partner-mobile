@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start -c --dev-client",
     "ios": "expo run:ios",
     "android": "expo run:android",
     "build:dev": "eas build --profile development",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-community/blur": "^4.4.0",
     "@react-navigation/native": "^6.1.7",
     "@reduxjs/toolkit": "^2.2.5",
     "expo": "^51.0.8",
@@ -28,6 +29,7 @@
     "expo-system-ui": "~3.0.4",
     "expo-web-browser": "~13.0.3",
     "firebase": "^10.5.2",
+    "lib": "^5.1.0",
     "nativewind": "^4.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

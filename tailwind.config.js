@@ -30,6 +30,9 @@ module.exports = {
           B2: '#1CB45D',
           B3: '#008375',
         },
+        blue: {
+          Text: '#215EF9',
+        },
       },
       fontFamily: {
         pthin: ['Poppins-Thin', 'sans-serif'],

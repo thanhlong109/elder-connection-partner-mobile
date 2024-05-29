@@ -1,3 +1,5 @@
+import { Gender } from '~/enums';
+
 export interface SignInForm {
   email: string;
   password: string;
@@ -17,7 +19,7 @@ export interface Account {
   biography: any;
   profilePicture: any;
   birthday: string;
-  sex: number;
+  sex: Gender;
   status: number;
   walletBalance: string;
   createAt: string;
@@ -50,4 +52,15 @@ export type SignUpRespone = Pick<
   | 'birthDate'
   | 'accountPassword'
   | 'confirmAccountPassword'
+>;
+
+export type PersonInfo = Pick<
+  Account,
+  | 'accountPhone'
+  | 'firstName'
+  | 'lastName'
+  | 'sex'
+  | 'accountEmail'
+  | 'birthDate'
+  | 'accountPassword'
 >;
