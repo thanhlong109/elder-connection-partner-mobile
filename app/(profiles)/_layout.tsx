@@ -7,9 +7,8 @@ const ProfileLayout = () => {
       <Stack.Screen
         name="person-infor"
         options={{
-          headerShown: true,
+          headerShown: false,
           animation: 'ios',
-          title: 'Thông tin cá nhân',
           contentStyle: {
             backgroundColor: '#fff',
           },
