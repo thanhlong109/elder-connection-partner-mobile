@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,6 +26,7 @@ const items = [
 const home = () => {
   return (
     <View className="h-full bg-white">
+      <StatusBar backgroundColor="#FFF" style="dark" />
       <Image
         source={images.bgShape.bgShape4}
         className="absolute right-0 top-0 h-[200px] w-2/3"

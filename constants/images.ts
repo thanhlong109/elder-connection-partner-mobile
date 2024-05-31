@@ -5,6 +5,8 @@ import bgShape3 from '~/assets/images/bgShapes/bgShape3.png';
 import bgShape4 from '~/assets/images/bgShapes/bgShape4.png';
 import home1 from '~/assets/images/home/home1.png';
 import home2 from '~/assets/images/home/home2.png';
+import recevieMoney from '~/assets/images/icons/RecevieMoney.png';
+import sendMoney2 from '~/assets/images/icons/SendMoney2.png';
 
 export const images = {
   logo,
@@ -17,5 +19,9 @@ export const images = {
   home: {
     home1,
     home2,
+  },
+  icons: {
+    recevieMoney,
+    sendMoney2,
   },
 };

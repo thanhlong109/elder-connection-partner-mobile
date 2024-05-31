@@ -14,6 +14,26 @@ const ProfileLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="finance"
+        options={{
+          headerShown: false,
+          animation: 'ios',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="addVerifyInfo"
+        options={{
+          headerShown: false,
+          animation: 'ios',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };
