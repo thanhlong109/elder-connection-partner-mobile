@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Image } from 'react-native';
@@ -9,9 +10,9 @@ import { images } from '~/constants/images';
 const items = [
   {
     img: images.home.home2,
-    title: 'Cập nhật hồ sỡ',
+    title: 'Cập nhật hồ sơ',
     desc: 'Hãy bổ sung thêm thông tin để bắt đầu làm việc nhé!',
-    href: '',
+    href: 'addVerifyInfo',
     buttonTitle: 'Bổ sung hồ sơ',
   },
   {
@@ -43,7 +44,13 @@ const home = () => {
             Elder Connection - Life's Affection.
           </Text>
           <View>
-            <Carousel animated pagingEnabled autoplay className="mt-1" pageControlPosition="under">
+            <Carousel
+              animated
+              pagingEnabled
+              autoplay
+              loop
+              className="mt-1"
+              pageControlPosition="under">
               {items.map((item, index) => (
                 <View key={index} className=" p-6">
                   <Card enableShadow elevation={5} className="relative gap-6 p-6" center>
@@ -56,7 +63,11 @@ const home = () => {
                         {item.desc}
                       </Text>
                     </View>
-                    <Button backgroundColor={colors.primary} onPress={() => {}}>
+                    <Button
+                      backgroundColor={colors.primary}
+                      onPress={() => {
+                        router.push(item.href);
+                      }}>
                       <Text>{item.buttonTitle}</Text>
                     </Button>
                     <View
