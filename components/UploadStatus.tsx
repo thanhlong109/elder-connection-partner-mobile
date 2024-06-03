@@ -10,7 +10,7 @@ interface UploadStatuProps {
 
 const UploadStatus = ({ uploadStatus }: UploadStatuProps) => {
   const { progress, state } = uploadStatus;
-  console.log(state);
+
   return (
     <Modal animationType="slide" visible={state === 'running'} transparent>
       <View className=" h-full w-full bg-[rgba(0,0,0,0.3)]">

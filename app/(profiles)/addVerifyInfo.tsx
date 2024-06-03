@@ -12,9 +12,8 @@ import { TouchableOpacity } from 'react-native';
 import colors from '~/constants/colors';
 import * as ImagePicker from 'expo-image-picker';
 import { UploadingStatus, uploadFiles } from '~/utils/uploadMedia';
-import { TaskState } from 'firebase/storage';
 import UploadStatus from '~/components/UploadStatus';
-import { NofityModelData } from '~/components/NofityModel';
+import NofityModel, { NofityModelData } from '~/components/NofityModel';
 
 const AddVerifyInfo = () => {
   const [cccdFront, setCccdFront] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
@@ -24,12 +23,29 @@ const AddVerifyInfo = () => {
   const [xyllBack, setxyllBack] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
 
   const [uploadStatus, setUploadStatus] = useState<UploadingStatus>({ progress: 0, state: 'none' });
-  const [notifyData, setNotifyData] = useState<NofityModelData>();
+  const [notifyData, setNotifyData] = useState<NofityModelData>({
+    message: undefined,
+    title: 'Ops.. Hồ sơ bạn chưa đủ!',
+  });
 
   const handleUploadPress = () => {
     if (!cccdFront) {
-    }
-    if (cccdFront && cccdBack && gxnct && xyllBack && xyllFront) {
+      setNotifyData({ ...notifyData, message: 'Vui lòng bổ xung thêm mặt trước CCCD nhé!' });
+    } else if (!cccdBack) {
+      setNotifyData({ ...notifyData, message: 'Vui lòng bổ xung thêm mặt sau CCCD nhé!' });
+    } else if (!gxnct) {
+      setNotifyData({ ...notifyData, message: 'Vui lòng bổ xung thêm giấy xác nhận cư trú nhé!' });
+    } else if (!xyllFront) {
+      setNotifyData({
+        ...notifyData,
+        message: 'Vui lòng bổ xung thêm mặt trước sơ yếu lý lịch nhé nhé!',
+      });
+    } else if (!xyllBack) {
+      setNotifyData({
+        ...notifyData,
+        message: 'Vui lòng bổ xung thêm mặt sau sơ yếu lý lịch nhé nhé!',
+      });
+    } else {
       uploadFiles({
         images: [cccdFront, cccdBack, gxnct, xyllBack, xyllFront],
         floderName: 'User-2',
@@ -41,7 +57,6 @@ const AddVerifyInfo = () => {
           setUploadStatus({ ...uploadStatus, state: 'error' });
         },
       });
-    } else {
     }
   };
 
@@ -202,7 +217,7 @@ const AddVerifyInfo = () => {
                 </View>
 
                 <Button
-                  onPress={handleUploadPress}
+                  onPress={() => handleUploadPress()}
                   className="mt-4"
                   fullWidth
                   backgroundColor={colors.secondary.DEFAULT}>
@@ -211,6 +226,7 @@ const AddVerifyInfo = () => {
               </View>
               <UploadStatus uploadStatus={uploadStatus} />
               {/*  */}
+              <NofityModel data={notifyData} setData={setNotifyData} />
             </Card>
           </View>
         </ScrollView>
