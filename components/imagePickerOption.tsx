@@ -6,7 +6,7 @@ import colors from '~/constants/colors';
 import * as ImagePicker from 'expo-image-picker';
 
 export interface ImagePickerOptionProps {
-  onImageSelected: (imgUri: string) => void;
+  onImageSelected: (img: ImagePicker.ImagePickerAsset) => void;
   buttonContent: React.ReactNode;
   aspect?: [number, number] | undefined;
 }
@@ -17,7 +17,7 @@ enum PickerMode {
 }
 
 const ImagePickerOption = ({ onImageSelected, buttonContent, aspect }: ImagePickerOptionProps) => {
-  const [image, setImgae] = useState<string | undefined>(undefined);
+  const [image, setImgae] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
   const [visible, setVisible] = useState(false);
   const uploadImage = async (mode: PickerMode) => {
     try {
@@ -41,17 +41,17 @@ const ImagePickerOption = ({ onImageSelected, buttonContent, aspect }: ImagePick
       }
 
       if (!result?.canceled) {
-        await saveImage(result.assets[0].uri);
+        await saveImage(result.assets[0]);
       }
     } catch (error: any) {
       alert('Lỗi tải ảnh: ' + error.message);
       setVisible(false);
     }
   };
-  const saveImage = async (imageUri: string) => {
+  const saveImage = async (image: ImagePicker.ImagePickerAsset) => {
     try {
-      setImgae(imageUri);
-      onImageSelected(imageUri);
+      setImgae(image);
+      onImageSelected(image);
       setVisible(false);
     } catch (error) {}
   };

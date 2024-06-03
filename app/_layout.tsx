@@ -34,7 +34,6 @@ export default function Layout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="(profiles)" options={{ headerShown: false, animation: 'ios' }} />
-        <Stack.Screen name="(models)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </Provider>

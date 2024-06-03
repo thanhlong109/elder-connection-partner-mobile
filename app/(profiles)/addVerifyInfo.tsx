@@ -10,14 +10,41 @@ import ImagePickerOption from '~/components/imagePickerOption';
 import { images } from '~/constants/images';
 import { TouchableOpacity } from 'react-native';
 import colors from '~/constants/colors';
+import * as ImagePicker from 'expo-image-picker';
+import { UploadingStatus, uploadFiles } from '~/utils/uploadMedia';
+import { TaskState } from 'firebase/storage';
+import UploadStatus from '~/components/UploadStatus';
+import { NofityModelData } from '~/components/NofityModel';
 
 const AddVerifyInfo = () => {
-  const [cccdFront, setCccdFront] = useState<string | undefined>(undefined);
-  const [cccdBack, setCccdBack] = useState<string | undefined>(undefined);
-  const [gxnct, setGxnct] = useState<string | undefined>(undefined);
-  const [xyllFront, setxyllFront] = useState<string | undefined>(undefined);
-  const [xyllBack, setxyllBack] = useState<string | undefined>(undefined);
-  const ref = useRef<TouchableOpacity>(null);
+  const [cccdFront, setCccdFront] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const [cccdBack, setCccdBack] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const [gxnct, setGxnct] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const [xyllFront, setxyllFront] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const [xyllBack, setxyllBack] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+
+  const [uploadStatus, setUploadStatus] = useState<UploadingStatus>({ progress: 0, state: 'none' });
+  const [notifyData, setNotifyData] = useState<NofityModelData>();
+
+  const handleUploadPress = () => {
+    if (!cccdFront) {
+    }
+    if (cccdFront && cccdBack && gxnct && xyllBack && xyllFront) {
+      uploadFiles({
+        images: [cccdFront, cccdBack, gxnct, xyllBack, xyllFront],
+        floderName: 'User-2',
+        onUploading: (uploadStatus) => setUploadStatus(uploadStatus),
+        onUploadSucess: (url) => {
+          setUploadStatus({ progress: 100, state: 'success' });
+        },
+        onUploadFailed: (err) => {
+          setUploadStatus({ ...uploadStatus, state: 'error' });
+        },
+      });
+    } else {
+    }
+  };
+
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#4045A3" style="light" />
@@ -38,7 +65,7 @@ const AddVerifyInfo = () => {
               <View className="m-4">
                 <View className="!bg-gray-F2 p-4">
                   <View row className="items-center justify-between">
-                    <Text className="font-psemibold text-base">Mặt sau CCCD</Text>
+                    <Text className="font-psemibold text-base">Mặt trước CCCD</Text>
                     <ImagePickerOption
                       onImageSelected={(e) => setCccdFront(e)}
                       buttonContent={
@@ -55,7 +82,7 @@ const AddVerifyInfo = () => {
 
                   <View center className="mt-4 w-full">
                     <Image
-                      source={cccdFront ? { uri: cccdFront } : images.empty}
+                      source={cccdFront ? { uri: cccdFront.uri } : images.empty}
                       className="h-[150px] w-full"
                       resizeMode="contain"
                     />
@@ -82,7 +109,7 @@ const AddVerifyInfo = () => {
 
                   <View center className="mt-4 w-full">
                     <Image
-                      source={cccdBack ? { uri: cccdBack } : images.empty}
+                      source={cccdBack ? { uri: cccdBack.uri } : images.empty}
                       className="h-[150px] w-full"
                       resizeMode="contain"
                     />
@@ -110,7 +137,7 @@ const AddVerifyInfo = () => {
 
                   <View center className="mt-4 w-full">
                     <Image
-                      source={gxnct ? { uri: gxnct } : images.empty}
+                      source={gxnct ? { uri: gxnct.uri } : images.empty}
                       className="h-[150px] w-full"
                       resizeMode="contain"
                     />
@@ -138,7 +165,7 @@ const AddVerifyInfo = () => {
 
                   <View center className="mt-4 w-full">
                     <Image
-                      source={xyllFront ? { uri: xyllFront } : images.empty}
+                      source={xyllFront ? { uri: xyllFront.uri } : images.empty}
                       className="h-[150px] w-full"
                       resizeMode="contain"
                     />
@@ -167,18 +194,22 @@ const AddVerifyInfo = () => {
 
                   <View center className="mt-4 w-full">
                     <Image
-                      source={xyllBack ? { uri: xyllBack } : images.empty}
+                      source={xyllBack ? { uri: xyllBack.uri } : images.empty}
                       className="h-[150px] w-full"
                       resizeMode="contain"
                     />
                   </View>
                 </View>
 
-                <Button className="mt-4" fullWidth backgroundColor={colors.secondary.DEFAULT}>
+                <Button
+                  onPress={handleUploadPress}
+                  className="mt-4"
+                  fullWidth
+                  backgroundColor={colors.secondary.DEFAULT}>
                   <Text className="font-psemibold !text-white">Gửi hồ sơ</Text>
                 </Button>
               </View>
-
+              <UploadStatus uploadStatus={uploadStatus} />
               {/*  */}
             </Card>
           </View>
