@@ -11,6 +11,7 @@ import { MarkedDates } from 'react-native-calendars/src/types';
 import TaskItem from '~/components/TaskItem';
 import { Task } from '~/types/Task.type';
 import { TaskStatus } from '~/enums';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const tabMenu = [
   { id: 1, title: 'Hôm nay' },
@@ -53,9 +54,8 @@ const workSchedule = () => {
   });
   return (
     <View backgroundColor="#fff">
-      <StatusBar style="light" backgroundColor="#4045A3" />
       <SafeAreaView>
-        <LinearGradient colors={['#4045A3', '#FFF']} className="h-full p-6">
+        <LinearGradient colors={['#fff', '#FFF']} className="h-full p-6">
           <Text className="font-psemibold text-2xl !text-white">Lịch làm việc</Text>
           <View row className="mb-6 mt-6 gap-2">
             {tabMenu.map((tab) => (
@@ -81,19 +81,29 @@ const workSchedule = () => {
           </View>
           {selectedTab.id === tabMenu[0].id && (
             <View>
-              <FlatList data={fakeData} renderItem={({ item }) => <TaskItem item={item} />} />
+              <FlatList
+                data={fakeData}
+                renderItem={({ item, index }) => (
+                  <Animated.View
+                    entering={FadeInDown.delay(index * 200)
+                      .duration(1000)
+                      .springify()}>
+                    <TaskItem item={item} />
+                  </Animated.View>
+                )}
+              />
             </View>
           )}
 
           {selectedTab.id === tabMenu[1].id && (
-            <View>
+            <Animated.View entering={FadeInDown.duration(1000).springify()}>
               <Calendar
                 onDayPress={(day) => {
                   console.log(day);
                 }}
                 markedDates={marked}
               />
-            </View>
+            </Animated.View>
           )}
         </LinearGradient>
       </SafeAreaView>

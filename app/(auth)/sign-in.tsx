@@ -16,15 +16,15 @@ const SignIn = () => {
   });
   return (
     <>
-      <View>
+      <View backgroundColor="#fff">
         <Image
           source={images.bgShape.bgShape2}
-          className="absolute h-[300px] w-2/3"
+          className="absolute h-[200px] w-2/3"
           resizeMode="stretch"
         />
         <Image
           source={images.bgShape.bgShape3}
-          className="absolute right-0 top-1/3 h-[300px] w-1/3"
+          className="absolute right-0 top-[100px] h-[200px] w-1/3"
           resizeMode="stretch"
         />
         <ScrollView

@@ -28,6 +28,7 @@ export interface Account {
   birthDate: string;
   accountPassword: string;
   confirmAccountPassword: string;
+  cccd: string;
 }
 
 export type SignUpRequest = Pick<
@@ -40,6 +41,7 @@ export type SignUpRequest = Pick<
   | 'birthDate'
   | 'accountPassword'
   | 'confirmAccountPassword'
+  | 'cccd'
 >;
 
 export type SignUpRespone = Pick<

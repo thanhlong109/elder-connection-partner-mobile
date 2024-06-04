@@ -1,11 +1,14 @@
 export enum Gender {
-  MALE,
-  FEMALE,
+  MALE = 1,
+  FEMALE = 2,
+  ORTHER = 3,
 }
+
 export enum DateStringType {
   SHORT,
   FULL,
 }
+
 export enum TaskStatus {
   WAIT,
   DONE,

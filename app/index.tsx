@@ -1,7 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
 import { Stack, Link, router } from 'expo-router';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { View } from 'react-native-ui-lib';
 
 import { Container } from '~/components/Container';
 import CustomButton from '~/components/CustomButton';
@@ -11,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Container>
-        <View className="h-full items-center justify-around bg-white px-8 py-6">
+        <View animated className="h-full items-center justify-around bg-white px-8 py-6">
           <Animated.View
             entering={FadeInUp.duration(2000).springify()}
             className="h-[150px] w-[150px] items-center justify-center rounded-full bg-primary shadow-lg">
