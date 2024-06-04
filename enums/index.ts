@@ -6,3 +6,8 @@ export enum DateStringType {
   SHORT,
   FULL,
 }
+export enum TaskStatus {
+  WAIT,
+  DONE,
+  CANCELLED,
+}

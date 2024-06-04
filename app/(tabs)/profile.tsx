@@ -11,6 +11,7 @@ import colors from '~/constants/colors';
 const profile = () => {
   return (
     <LinearGradient colors={['#4045A3', '#fff', '#FFF']} className=" h-full w-full gap-6 px-6">
+      <StatusBar style="auto" />
       <SafeAreaView className="max-h-full">
         <View className="gap-6">
           <Text className="w-full !text-center font-psemibold text-xl !text-white">Tài khoản</Text>

@@ -34,6 +34,7 @@ module.exports = {
         blue: {
           Text: '#215EF9',
           B1: '#424FAB',
+          BG: '#E5EBFC',
         },
         yellow: {
           Star: '#FCAE10',
