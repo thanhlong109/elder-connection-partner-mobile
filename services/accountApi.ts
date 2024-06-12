@@ -1,17 +1,111 @@
-import { SignUpRequest, SignUpRespone } from '~/types/auth.type';
-import { baseQueryWithReauth } from './baseApi';
+import {
+  AccountDestailsRespones,
+  GetWalletBalanceResponse,
+  SignInRequest,
+  SignInRespone,
+  SignUpRequest,
+  SignUpRespone,
+  UpdateAccountRequest,
+} from '~/types/auth.type';
 import { createApi } from '@reduxjs/toolkit/query/react';
+import {
+  GetTransactionByAccountResponse,
+  TopUpWalletRequest,
+  TopUpWalletResponse,
+} from '~/types/payment.type';
+import { baseQueryWithReauth } from './baseApi';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['account', 'wallet'],
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     signUp: builder.mutation<ApiResponse<SignUpRespone>, SignUpRequest>({
-      query: (SignUpRequest) => ({
-        url: 'api/user/sign-up',
+      query: (signUpRequest) => ({
+        url: 'api/users/sign-up',
         method: 'POST',
-        body: SignUpRequest,
+        body: signUpRequest,
       }),
     }),
+    signIn: builder.mutation<ApiResponse<SignInRespone>, SignInRequest>({
+      query: (signInRequest) => ({
+        url: 'api/users/sign-in',
+        method: 'POST',
+        body: signInRequest,
+      }),
+      transformErrorResponse: (response: any) => {
+        let transform: ApiResponse<SignInRespone> = {
+          message: '',
+          result: {
+            expired: '',
+            jwtRefreshToken: '',
+            jwtToken: '',
+            accountId: '',
+          },
+          status: 400,
+        };
+
+        if (
+          'jwtToken' in response &&
+          'expired' in response &&
+          'jwtRefreshToken' in response &&
+          'accountId' in response
+        ) {
+          transform.result.expired = response.expired;
+          transform.result.jwtRefreshToken = response.jwtRefreshToken;
+          transform.result.jwtToken = response.jwtToken;
+          transform.result.accountId = response.accountId;
+        }
+        if ('status' in response) {
+          transform.status = response.status;
+        }
+        if ('message' in response) {
+          transform.message = response.message;
+        }
+
+        return transform;
+      },
+    }),
+
+    accountDetails: builder.query<ApiResponse<AccountDestailsRespones>, string>({
+      query: (accountId) => ({
+        url: `api/accounts/get-account-detail/${accountId}`,
+      }),
+      providesTags: ['account'],
+    }),
+
+    getWalletBalance: builder.query<ApiResponse<GetWalletBalanceResponse>, string>({
+      query: (accountId) => ({
+        url: `api/accounts/get-wallet-balance/${accountId}`,
+      }),
+      providesTags: ['wallet'],
+    }),
+
+    getTransactionHistory: builder.query<
+      ApiResponse<PaggingResponse<GetTransactionByAccountResponse>>,
+      string
+    >({
+      query: (accountId) => ({
+        url: `api/transaction-histories/get-all-transaction-history-by-account/${accountId}`,
+      }),
+      providesTags: ['wallet'],
+    }),
+
+    updateAccount: builder.mutation<ApiResponse<AccountDestailsRespones>, UpdateAccountRequest>({
+      query: (body) => ({
+        url: `api/accounts/update-account-detail/${body.id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['account'],
+    }),
+    topUpWallet: builder.mutation<TopUpWalletResponse, TopUpWalletRequest>({
+      query: (para) => ({
+        url: `api/payments/request-top-up-wallet?accountId=${para.accountId}&amount=${para.amount}`,
+        method: 'POST',
+      }),
+    }),
+
     refresh: builder.mutation<{ accessToken: string }, { refreshToken: string }>({
       query: (refreshToken) => ({
         url: 'auth/refresh',
@@ -20,7 +114,15 @@ export const accountApi = createApi({
       }),
     }),
   }),
-  tagTypes: [],
   reducerPath: 'accountApi',
 });
-export const { useRefreshMutation, useSignUpMutation } = accountApi;
+export const {
+  useRefreshMutation,
+  useSignInMutation,
+  useSignUpMutation,
+  useAccountDetailsQuery,
+  useUpdateAccountMutation,
+  useGetWalletBalanceQuery,
+  useGetTransactionHistoryQuery,
+  useTopUpWalletMutation,
+} = accountApi;

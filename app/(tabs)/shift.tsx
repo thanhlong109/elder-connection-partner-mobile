@@ -1,11 +1,12 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const shift = () => {
   return (
-    <View>
-      <Text>shift</Text>
-    </View>
+    <SafeAreaView>
+      <View></View>
+    </SafeAreaView>
   );
 };
 

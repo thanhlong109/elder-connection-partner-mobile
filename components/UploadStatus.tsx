@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, ProgressBar, Text, View } from 'react-native-ui-lib';
-import { TaskState } from 'firebase/storage';
 import { UploadingStatus } from '~/utils/uploadMedia';
 import colors from '~/constants/colors';
 

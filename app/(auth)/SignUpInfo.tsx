@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SignUpRequest } from '~/types/auth.type';
 import { Gender } from '~/enums';
 import {
@@ -13,22 +13,25 @@ import {
 import { router } from 'expo-router';
 import colors from '~/constants/colors';
 import { AntDesign } from '@expo/vector-icons';
+import { useSignUpMutation } from '~/services/accountApi';
 
 const fullNameRegex = /^(?=.* .{2,}).{6,}$/;
 const passwordRegex = /^\S{6,12}$/;
 
 const SignUpInfo = () => {
+  const [signUp, { isLoading, isSuccess, isError, error }] = useSignUpMutation();
+  const [showDialog, setshowDialog] = useState(false);
+
   const [form, setform] = useState<SignUpRequest>({
     accountEmail: '',
     accountPassword: '',
     accountPhone: '',
-    birthDate: '',
     confirmAccountPassword: '',
     firstName: '',
     lastName: '',
-    sex: Gender.MALE,
-    cccd: '',
+    cccdNumber: '',
   });
+
   const fullNameRef = useRef<TextFieldRef>(null);
   const emailRef = useRef<TextFieldRef>(null);
   const cccdRef = useRef<TextFieldRef>(null);
@@ -52,6 +55,17 @@ const SignUpInfo = () => {
       phoneValid
     );
   };
+
+  useEffect(() => {
+    if (isSuccess) setshowDialog(true);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+      emailRef.current?.validate();
+    }
+  }, [isError]);
 
   const handleSubmit = () => {
     if (validateFields()) router.push('sign-in');
@@ -87,7 +101,7 @@ const SignUpInfo = () => {
           maxLength={50}
         />
         {/* sex */}
-        <View className=" justify-between bg-gray-F2 px-4 py-4">
+        {/* <View className=" justify-between bg-gray-F2 px-4 py-4">
           <Text className="font-pmedium">Giới tính</Text>
           <RadioGroup
             initialValue={form.sex}
@@ -99,7 +113,7 @@ const SignUpInfo = () => {
               <RadioButton color="#333" value={Gender.ORTHER} label={'Khác'} />
             </View>
           </RadioGroup>
-        </View>
+        </View> */}
         {/* cccd */}
         <TextField
           placeholder={'123456789101'}
@@ -111,9 +125,9 @@ const SignUpInfo = () => {
             paddingVertical: 8,
           }}
           label="Số CCCD"
-          onChangeText={(value: string) => setform({ ...form, cccd: value })}
+          onChangeText={(value: string) => setform({ ...form, cccdNumber: value })}
           enableErrors
-          value={form.cccd}
+          value={form.cccdNumber}
           validate={['required', 'number', (value: string) => value.length === 12]}
           validationMessage={[
             'Vui lòng không bỏ trống trường này!',

@@ -34,6 +34,16 @@ const ProfileLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="weeklyReport"
+        options={{
+          headerShown: false,
+          animation: 'ios',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };

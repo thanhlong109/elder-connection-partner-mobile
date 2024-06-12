@@ -31,14 +31,14 @@ const profile = () => {
                   <Avatar
                     animate
                     source={{
-                      uri: 'https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/436495635_3382806075345023_6921021507996145601_n.jpg?stp=c0.40.100.100a_dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGA5CQp991Z_AORFiOl2E7iOdDUApt-I5k50NQCm34jmfHUmMWYA2Iu_tex7Ma2fgmZXttIt5RPmyxArMWCpf1r&_nc_ohc=1UrFi6XyAzkQ7kNvgEBKM_S&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fhan4-3.fna&cb_e2o_trans=t&oh=00_AYDwR3HBIVOg9Pn410EyAMteIJxAL6BTOpwNxVZY7vK0cA&oe=665B8428',
+                      uri: 'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
                     }}
                   />
                 </View>
                 <View>
-                  <Text className="font-pmedium text-base !text-secondary">Nguyễn Chiến Thắng</Text>
+                  <Text className="font-pmedium text-base !text-secondary">Nguyễn Thành Long</Text>
                   <Text className="font-pregular text-base">0389142366</Text>
-                  <Text className="font-pregular text-base">thangdepgai@gmail.com</Text>
+                  <Text className="font-pregular text-base">thinghiemminiworld@gmail.com</Text>
                 </View>
               </View>
             </Card>
@@ -66,7 +66,9 @@ const profile = () => {
             <Card enableShadow className="p-6" elevation={5}>
               <View row className="justify-between">
                 <Text className="font-psemibold text-lg !text-blue-Text">Báo cáo tuần</Text>
-                <TouchableOpacity className=" rounded-full bg-secondary px-4 py-1">
+                <TouchableOpacity
+                  onPress={() => router.push('weeklyReport')}
+                  className=" rounded-full bg-secondary px-4 py-1">
                   <AntDesign name="right" size={20} color="white" />
                 </TouchableOpacity>
               </View>

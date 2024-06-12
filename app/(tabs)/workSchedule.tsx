@@ -1,15 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Avatar, Card, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
 import { Calendar } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import TaskItem from '~/components/TaskItem';
-import { Task } from '~/types/Task.type';
 import { TaskStatus } from '~/enums';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
@@ -17,29 +15,35 @@ const tabMenu = [
   { id: 1, title: 'Hôm nay' },
   { id: 2, title: 'Tháng này' },
 ];
-
+export interface Task {
+  userName: string;
+  avatarUrl: string;
+  endTime: string;
+  startTime: string;
+  status: TaskStatus;
+}
 const fakeData: Task[] = [
   {
-    userName: 'Nguyễn chiến Thắng',
+    userName: 'Nguyễn Thành Long',
     avatarUrl:
-      'https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/436495635_3382806075345023_6921021507996145601_n.jpg?stp=c0.40.100.100a_dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGA5CQp991Z_AORFiOl2E7iOdDUApt-I5k50NQCm34jmfHUmMWYA2Iu_tex7Ma2fgmZXttIt5RPmyxArMWCpf1r&_nc_ohc=1UrFi6XyAzkQ7kNvgEBKM_S&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fhan4-3.fna&cb_e2o_trans=t&oh=00_AYDwR3HBIVOg9Pn410EyAMteIJxAL6BTOpwNxVZY7vK0cA&oe=665B8428',
+      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
     startTime: '18 giờ 30',
     endTime: '23 giờ 30',
     status: TaskStatus.WAIT,
   },
   {
-    userName: 'Nguyễn chiến Thắng',
+    userName: 'Nguyễn Thành Long',
     startTime: '18 giờ 30',
     avatarUrl:
-      'https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/436495635_3382806075345023_6921021507996145601_n.jpg?stp=c0.40.100.100a_dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGA5CQp991Z_AORFiOl2E7iOdDUApt-I5k50NQCm34jmfHUmMWYA2Iu_tex7Ma2fgmZXttIt5RPmyxArMWCpf1r&_nc_ohc=1UrFi6XyAzkQ7kNvgEBKM_S&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fhan4-3.fna&cb_e2o_trans=t&oh=00_AYDwR3HBIVOg9Pn410EyAMteIJxAL6BTOpwNxVZY7vK0cA&oe=665B8428',
+      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
     endTime: '23 giờ 30',
     status: TaskStatus.DONE,
   },
   {
-    userName: 'Nguyễn chiến Thắng',
+    userName: 'Nguyễn Thành Long',
     startTime: '18 giờ 30',
     avatarUrl:
-      'https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/436495635_3382806075345023_6921021507996145601_n.jpg?stp=c0.40.100.100a_dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGA5CQp991Z_AORFiOl2E7iOdDUApt-I5k50NQCm34jmfHUmMWYA2Iu_tex7Ma2fgmZXttIt5RPmyxArMWCpf1r&_nc_ohc=1UrFi6XyAzkQ7kNvgEBKM_S&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fhan4-3.fna&cb_e2o_trans=t&oh=00_AYDwR3HBIVOg9Pn410EyAMteIJxAL6BTOpwNxVZY7vK0cA&oe=665B8428',
+      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
     endTime: '23 giờ 30',
     status: TaskStatus.CANCELLED,
   },
@@ -53,9 +57,9 @@ const workSchedule = () => {
     ['2024-06-07']: { selected: true, marked: true, selectedColor: 'orange' },
   });
   return (
-    <View backgroundColor="#fff">
+    <View backgroundColor="#4045A3">
       <SafeAreaView>
-        <LinearGradient colors={['#fff', '#FFF']} className="h-full p-6">
+        <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className="h-full p-6">
           <Text className="font-psemibold text-2xl !text-white">Lịch làm việc</Text>
           <View row className="mb-6 mt-6 gap-2">
             {tabMenu.map((tab) => (

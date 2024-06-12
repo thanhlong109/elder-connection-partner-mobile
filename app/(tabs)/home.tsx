@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, Carousel, PageControl, Text, View } from 'react-native-ui-lib';
+import { Button, Card, Carousel, Text, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
 import { images } from '~/constants/images';
 

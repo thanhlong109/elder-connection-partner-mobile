@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Card, Text, View } from 'react-native-ui-lib';
+import { Task } from '~/app/(tabs)/workSchedule';
 import { TaskStatus } from '~/enums';
-import { Task } from '~/types/Task.type';
 
 interface TaskItemProps {
   item: Task;
@@ -11,7 +11,7 @@ const TaskItem = ({ item }: TaskItemProps) => {
   return (
     <Card enableShadow className=" my-4 p-2">
       <View className="relative gap-4 !rounded-lg px-2 pb-2 pt-6" row>
-        <Avatar source={item.avatarUrl} size={60} />
+        <Avatar source={{ uri: item.avatarUrl }} size={60} />
         <View centerV>
           <Text className="font-pmedium text-base">{item.userName}</Text>
           <Text className="font-pregular text-base">{`Thời gian: ${item.startTime} - ${item.endTime}`}</Text>

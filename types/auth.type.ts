@@ -1,12 +1,3 @@
-import { Gender } from '~/enums';
-
-export interface SignInForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-export type SignUpForm = Pick<SignInForm, 'email' | 'password'>;
-
 export interface Credentials {
   username: string;
   password: string;
@@ -19,7 +10,7 @@ export interface Account {
   biography: any;
   profilePicture: any;
   birthday: string;
-  sex: Gender;
+  sex: number;
   status: number;
   walletBalance: string;
   createAt: string;
@@ -28,7 +19,10 @@ export interface Account {
   birthDate: string;
   accountPassword: string;
   confirmAccountPassword: string;
-  cccd: string;
+  jwtToken: string;
+  expired: string;
+  jwtRefreshToken: string;
+  cccdNumber: string;
 }
 
 export type SignUpRequest = Pick<
@@ -36,12 +30,10 @@ export type SignUpRequest = Pick<
   | 'accountPhone'
   | 'firstName'
   | 'lastName'
-  | 'sex'
   | 'accountEmail'
-  | 'birthDate'
   | 'accountPassword'
   | 'confirmAccountPassword'
-  | 'cccd'
+  | 'cccdNumber'
 >;
 
 export type SignUpRespone = Pick<
@@ -56,13 +48,37 @@ export type SignUpRespone = Pick<
   | 'confirmAccountPassword'
 >;
 
-export type PersonInfo = Pick<
+export type SignInRequest = Pick<Account, 'accountEmail' | 'accountPassword'>;
+
+export interface SignInRespone {
+  jwtToken: string;
+  expired: string;
+  jwtRefreshToken: string;
+  accountId: string;
+}
+
+export type AccountDestailsRespones = Pick<
   Account,
-  | 'accountPhone'
+  | 'id'
   | 'firstName'
   | 'lastName'
+  | 'biography'
+  | 'profilePicture'
   | 'sex'
-  | 'accountEmail'
-  | 'birthDate'
-  | 'accountPassword'
+  | 'status'
+  | 'walletBalance'
+  | 'createAt'
+  | 'birthday'
 >;
+
+export type UpdateAccountRequest = Pick<
+  Account,
+  'id' | 'firstName' | 'lastName' | 'sex' | 'biography' | 'profilePicture' | 'birthday'
+>;
+
+export type GetWalletBalanceResponse = Pick<
+  Account,
+  'firstName' | 'lastName' | 'profilePicture'
+> & {
+  walletBalance: number;
+};

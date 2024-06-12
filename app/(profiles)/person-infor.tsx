@@ -14,16 +14,25 @@ import {
   View,
 } from 'react-native-ui-lib';
 import { Gender } from '~/enums';
-import { PersonInfo } from '~/types/auth.type';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { AntDesign, EvilIcons, Feather, FontAwesome, Fontisto } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import { router } from 'expo-router';
 
+export interface PersonInfo {
+  accountEmail: string;
+  accountPassword: string;
+  accountPhone: string;
+  birthDate: string;
+  firstName: string;
+  lastName: string;
+  sex: Gender;
+}
+
 const PersonInfor = () => {
   const [personInfo, setpersonInfo] = useState<PersonInfo>({
-    accountEmail: 'thanhlong109@gmail.com',
+    accountEmail: 'thinghiemminiworld@gmail.com',
     accountPassword: 'Baolong321@',
     accountPhone: '0389142366',
     birthDate: new Date().toLocaleDateString(),
