@@ -27,6 +27,7 @@ const accountInitialSate: Account = {
   sex: 1,
   status: 0,
   walletBalance: '',
+  cccdNumber: '',
   expired: '',
   jwtRefreshToken: '',
   jwtToken: '',
@@ -65,10 +66,14 @@ export const accountSlice = createSlice({
       state.account.lastName = action.payload.lastName;
       state.account.profilePicture = action.payload.profilePicture;
     },
+    clearData: (state) => {
+      state = initialState;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSignInRespone, setAccountDetails, setWalletRespone } = accountSlice.actions;
+export const { setSignInRespone, setAccountDetails, setWalletRespone, clearData } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;

@@ -1,11 +1,17 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, Carousel, Text, View } from 'react-native-ui-lib';
+import { useDispatch, useSelector } from 'react-redux';
+import ErrorModel from '~/components/ErrorModel';
+import LoadingModel from '~/components/LoadingModel';
 import colors from '~/constants/colors';
 import { images } from '~/constants/images';
+import { useAccountDetailsQuery } from '~/services/accountApi';
+import { setAccountDetails } from '~/slices/accountSlice';
+import { RootState } from '~/store';
 
 const items = [
   {
@@ -25,9 +31,40 @@ const items = [
 ];
 
 const home = () => {
+  const dispatch = useDispatch();
+  const account = useSelector((state: RootState) => state.accountSlice.account);
+  //-------------------------- start load user account infor ------------------------------//
+  const {
+    data: userData,
+    isLoading: isGetUserLoading,
+    isSuccess: isGetUserSuccess,
+    isError: isGetUserError,
+    error: getUserError,
+    refetch: refetchGetUser,
+  } = useAccountDetailsQuery(account.id);
+
+  useEffect(() => {
+    if (isGetUserSuccess && userData) {
+      dispatch(setAccountDetails(userData.result));
+    }
+  }, [isGetUserSuccess, userData]);
+
+  useEffect(() => {
+    if (isGetUserError) {
+      console.log('error load user:', getUserError);
+    }
+  }, [isGetUserError]);
+
+  //-------------------------- end load user account infor ------------------------------//
+
+  useEffect(() => {
+    refetchGetUser();
+  }, [account.id]);
   return (
     <View className="h-full bg-white">
       <StatusBar backgroundColor="#FFF" style="dark" />
+      <LoadingModel isloading={isGetUserLoading} />
+      <ErrorModel isError={isGetUserError} onReload={() => refetchGetUser()} />
       <Image
         source={images.bgShape.bgShape4}
         className="absolute right-0 top-0 h-[200px] w-2/3"

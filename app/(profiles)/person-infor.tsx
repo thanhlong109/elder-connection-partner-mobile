@@ -18,7 +18,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { AntDesign, EvilIcons, Feather, FontAwesome, Fontisto } from '@expo/vector-icons';
 import colors from '~/constants/colors';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { clearToken } from '~/utils/auth';
+import { clearData } from '~/slices/accountSlice';
 
 export interface PersonInfo {
   accountEmail: string;
@@ -31,16 +35,16 @@ export interface PersonInfo {
 }
 
 const PersonInfor = () => {
-  const [personInfo, setpersonInfo] = useState<PersonInfo>({
-    accountEmail: 'thinghiemminiworld@gmail.com',
-    accountPassword: 'Baolong321@',
-    accountPhone: '0389142366',
-    birthDate: new Date().toLocaleDateString(),
-    firstName: 'Nguyễn',
-    lastName: 'Thành long',
-    sex: Gender.MALE,
-  });
+  const dispatch = useDispatch();
+  const account = useSelector((state: RootState) => state.accountSlice.account);
   const [verified, setVerified] = useState(false);
+
+  const handleOnLogout = () => {
+    clearToken();
+    dispatch(clearData());
+
+    router.dismissAll();
+  };
 
   return (
     <SafeAreaView>
@@ -67,12 +71,13 @@ const PersonInfor = () => {
                   animate
                   size={150}
                   source={{
-                    uri: 'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
+                    uri: account.profilePicture,
                   }}
+                  autoColorsConfig={{ defaultColor: colors.gray.F2 }}
                 />
               </View>
               {/* name */}
-              <Text className="font-psemibold text-2xl !text-blue-B1">{`${personInfo.firstName} ${personInfo.lastName}`}</Text>
+              <Text className="font-psemibold text-2xl !text-blue-B1">{`${account.firstName} ${account.lastName}`}</Text>
               {/* verify */}
               {verified && (
                 <View row className="gap-2 rounded-full bg-green-500 px-5 py-3">
@@ -102,7 +107,7 @@ const PersonInfor = () => {
                 <View row className="w-full justify-between">
                   <Text className="font-pregular text-base">Số điện thoại:</Text>
                   <Text className="font-psemibold text-lg !text-blue-B1">
-                    {personInfo.accountPhone}
+                    {account.accountPhone}
                   </Text>
                 </View>
                 <View className="h-[1px] w-full bg-gray-C5" />
@@ -110,7 +115,7 @@ const PersonInfor = () => {
                 <View row className="w-full justify-between">
                   <Text className="font-pregular text-base">Email:</Text>
                   <Text className="font-psemibold text-sm !text-blue-B1">
-                    {personInfo.accountEmail}
+                    {account.accountEmail}
                   </Text>
                 </View>
                 <View className="h-[1px] w-full bg-gray-C5" />
@@ -118,14 +123,14 @@ const PersonInfor = () => {
                 <View row className="w-full justify-between">
                   <Text className="font-pregular text-base">Giới tính:</Text>
                   <Text className="font-psemibold text-lg !text-blue-B1">
-                    {personInfo.sex === Gender.MALE ? 'Nam' : 'Nữ'}
+                    {account.sex === Gender.MALE ? 'Nam' : 'Nữ'}
                   </Text>
                 </View>
                 <View className="h-[1px] w-full bg-gray-C5" />
                 {/* cccd */}
                 <View row className="w-full justify-between">
                   <Text className="font-pregular text-base">Số CCCD:</Text>
-                  <Text className="font-psemibold text-lg !text-blue-B1">54084649080</Text>
+                  <Text className="font-psemibold text-lg !text-blue-B1">{account.cccdNumber}</Text>
                 </View>
               </View>
             </Card>
@@ -135,7 +140,12 @@ const PersonInfor = () => {
               <Text className=" font-psemibold text-lg !text-white">Đổi mật khẩu</Text>
             </Button>
             {/* btn sign out */}
-            <Button outline outlineColor={colors.red.R1} outlineWidth={1} className="gap-4 py-4">
+            <Button
+              onPress={handleOnLogout}
+              outline
+              outlineColor={colors.red.R1}
+              outlineWidth={1}
+              className="gap-4 py-4">
               <Fontisto name="unlocked" size={24} color={colors.red.R1} />
               <Text className=" font-psemibold text-lg !text-red-R1">Đăng xuất</Text>
             </Button>

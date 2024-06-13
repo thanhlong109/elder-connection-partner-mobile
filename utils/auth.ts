@@ -25,3 +25,6 @@ export const loadToken = async () => {
   }
   return null;
 };
+export const clearToken = () => {
+  AsyncStorage.clear();
+};
