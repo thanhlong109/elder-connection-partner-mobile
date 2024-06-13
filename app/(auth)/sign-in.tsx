@@ -80,7 +80,7 @@ const SignIn = () => {
         />
         <ScrollView
           contentContainerStyle={{ justifyContent: 'center', height: '100%' }}
-          className="mb-[10%] p-6">
+          className="mb-[5%] p-6">
           <View useSafeArea className="h-full justify-end">
             <Animated.Text
               entering={FadeInDown.duration(1000).springify()}

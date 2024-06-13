@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SignUpRequest } from '~/types/auth.type';
-import { Gender } from '~/enums';
+import { DialogType, Gender } from '~/enums';
 import {
   Button,
   RadioButton,
@@ -14,6 +14,8 @@ import { router } from 'expo-router';
 import colors from '~/constants/colors';
 import { AntDesign } from '@expo/vector-icons';
 import { useSignUpMutation } from '~/services/accountApi';
+import CustomDialog from '~/components/CustomDialog';
+import LoadingModel from '~/components/LoadingModel';
 
 const fullNameRegex = /^(?=.* .{2,}).{6,}$/;
 const passwordRegex = /^\S{6,12}$/;
@@ -68,10 +70,18 @@ const SignUpInfo = () => {
   }, [isError]);
 
   const handleSubmit = () => {
-    if (validateFields()) router.push('sign-in');
+    if (validateFields()) signUp(form);
   };
   return (
     <View className="h-fit px-6">
+      <CustomDialog
+        setVisible={setshowDialog}
+        body="Bạn đã gửi thông tin đăng ký thành công! chờ chúng tôi xem xét thông tin của bạn"
+        visble={showDialog}
+        onDismiss={() => router.push('sign-in')}
+        type={DialogType.SUCCESS}
+      />
+      <LoadingModel isloading={isLoading} />
       <View className="mx-4 my-6 gap-6 rounded-3xl bg-white p-8 shadow-sm">
         {/* ho ten */}
         <TextField
@@ -80,6 +90,12 @@ const SignUpInfo = () => {
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,
             paddingVertical: 8,
+          }}
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
           }}
           validateOnChange
           ref={fullNameRef}
@@ -119,6 +135,12 @@ const SignUpInfo = () => {
           placeholder={'123456789101'}
           ref={cccdRef}
           validateOnChange
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
+          }}
           containerStyle={{
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,
@@ -143,6 +165,12 @@ const SignUpInfo = () => {
           ref={phoneRef}
           validateOnChange
           placeholder={'0987654321'}
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
+          }}
           containerStyle={{
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,
@@ -170,6 +198,12 @@ const SignUpInfo = () => {
           validateOnChange
           ref={emailRef}
           placeholder={'example@gmail.com'}
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
+          }}
           containerStyle={{
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,
@@ -187,6 +221,12 @@ const SignUpInfo = () => {
           validateOnChange
           ref={passwordRef}
           placeholder={'Ít nhất 6 ký tự'}
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
+          }}
           containerStyle={{
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,
@@ -208,6 +248,12 @@ const SignUpInfo = () => {
           validateOnChange
           ref={confirmPasswordRef}
           placeholder={'Nhập lại mật khẩu'}
+          fieldStyle={{
+            paddingVertical: 6,
+            borderWidth: 1,
+            borderColor: colors.gray.C5,
+            paddingHorizontal: 4,
+          }}
           containerStyle={{
             backgroundColor: colors.gray.F2,
             paddingHorizontal: 16,

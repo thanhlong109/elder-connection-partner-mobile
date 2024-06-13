@@ -34,4 +34,10 @@ export default {
   red: {
     R1: '#FF7170',
   },
+  Type: {
+    success: '#7fdf4b',
+    error: '#e5342f',
+    warning: '#eeba56',
+    info: '#468ee5',
+  },
 };
