@@ -78,3 +78,8 @@ export type CreatePostAndScheduleResponse = Pick<
   | 'price'
   | 'salaryAfterWork'
 >;
+
+export interface Position {
+  latitude: number;
+  longitude: number;
+}

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import colors from '~/constants/colors';
 import { images } from '~/constants/images';
 import { PostStatus } from '~/enums';
-//import { setViewPostDetail } from '~/slices/serviceBookingSlice';
+import { setViewPostDetail } from '~/slices/postSlice';
 import { GetPostRespone } from '~/types/post.type';
 import { getServiceTypeFromServiceStringEnum, getStringPostStatusEnum } from '~/utils/enumHelper';
 
@@ -20,7 +20,8 @@ const ActionItem = ({ item }: ActionItemProps) => {
     <Card enableShadow elevation={7} className="relative m-4 p-4 ">
       <TouchableOpacity
         onPress={() => {
-          router.push('actionDetails');
+          dispatch(setViewPostDetail(item));
+          router.push('postDetails');
         }}>
         <Text className="font-pmedium text-lg">{item.title}</Text>
         <Text
