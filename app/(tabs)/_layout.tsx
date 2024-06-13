@@ -28,9 +28,9 @@ const TabsLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="shift"
+          name="post"
           options={{
-            tabBarLabel: 'Ca làm việc',
+            tabBarLabel: 'Nhận việc',
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons name="work-outline" size={size} color={color} />
             ),

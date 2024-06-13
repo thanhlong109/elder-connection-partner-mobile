@@ -9,7 +9,7 @@ interface TaskItemProps {
 
 const TaskItem = ({ item }: TaskItemProps) => {
   return (
-    <Card enableShadow className=" my-4 p-2">
+    <Card enableShadow elevation={7} className=" !mx-6 my-4 p-2">
       <View className="relative gap-4 !rounded-lg px-2 pb-2 pt-6" row>
         <Avatar source={{ uri: item.avatarUrl }} size={60} />
         <View centerV>

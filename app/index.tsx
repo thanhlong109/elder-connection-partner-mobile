@@ -1,14 +1,29 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Stack, Link, router } from 'expo-router';
-import { Image, Text, TouchableOpacity } from 'react-native';
+import { Link, router } from 'expo-router';
+import { useEffect } from 'react';
+import { Image, Text } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { View } from 'react-native-ui-lib';
+import { useDispatch } from 'react-redux';
 
 import { Container } from '~/components/Container';
 import CustomButton from '~/components/CustomButton';
 import { images } from '~/constants/images';
+import { setSignInRespone } from '~/slices/accountSlice';
+import { loadToken } from '~/utils/auth';
 
 export default function Home() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const load = async () => {
+      const loadedToken = await loadToken();
+      if (loadedToken) {
+        dispatch(setSignInRespone(loadedToken));
+        router.push('/home');
+      }
+    };
+    load();
+  }, []);
   return (
     <>
       <Container>

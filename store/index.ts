@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { accountApi } from '~/services/accountApi';
 import { connectorApi } from '~/services/connectorApi';
+import { postApi } from '~/services/postApi';
 import accountSlice from '~/slices/accountSlice';
 
 export const store = configureStore({
@@ -8,9 +9,13 @@ export const store = configureStore({
     accountSlice: accountSlice,
     [accountApi.reducerPath]: accountApi.reducer,
     [connectorApi.reducerPath]: connectorApi.reducer,
+    [postApi.reducerPath]: postApi.reducer,
   },
   middleware: (getDefaultMiddleWare) =>
-    getDefaultMiddleWare().concat(accountApi.middleware).concat(connectorApi.middleware),
+    getDefaultMiddleWare()
+      .concat(accountApi.middleware)
+      .concat(connectorApi.middleware)
+      .concat(postApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

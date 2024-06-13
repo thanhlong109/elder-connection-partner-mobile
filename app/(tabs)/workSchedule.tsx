@@ -59,29 +59,31 @@ const workSchedule = () => {
   return (
     <View backgroundColor="#4045A3">
       <SafeAreaView>
-        <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className="h-full p-6">
-          <Text className="font-psemibold text-2xl !text-white">Lịch làm việc</Text>
-          <View row className="mb-6 mt-6 gap-2">
-            {tabMenu.map((tab) => (
-              <TouchableOpacity
-                row
-                onPress={() => setSelectedTab(tab)}
-                key={tab.id}
-                center
-                className={`relative rounded-full p-1 ${selectedTab.id === tab.id ? 'bg-blue-BG' : 'bg-gray-100'}`}
-                flex>
-                <Text
-                  className={`font-pmedium text-lg ${selectedTab.id === tab.id ? '!text-blue-Text' : '!text-textPrimary'}`}
-                  center>
-                  {tab.title}
-                </Text>
-                {tab.id === selectedTab.id && (
-                  <View className="absolute right-2 !rounded-full bg-white p-1">
-                    <AntDesign name="checkcircle" size={18} color={colors.blue.Text} />
-                  </View>
-                )}
-              </TouchableOpacity>
-            ))}
+        <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className="h-full">
+          <View className="p-6">
+            <Text className="font-psemibold text-2xl !text-white">Lịch làm việc</Text>
+            <View row className="mb-6 mt-6 gap-2">
+              {tabMenu.map((tab) => (
+                <TouchableOpacity
+                  row
+                  onPress={() => setSelectedTab(tab)}
+                  key={tab.id}
+                  center
+                  className={`relative rounded-full p-1 ${selectedTab.id === tab.id ? 'bg-blue-BG' : 'bg-gray-100'}`}
+                  flex>
+                  <Text
+                    className={`font-pmedium text-lg ${selectedTab.id === tab.id ? '!text-blue-Text' : '!text-textPrimary'}`}
+                    center>
+                    {tab.title}
+                  </Text>
+                  {tab.id === selectedTab.id && (
+                    <View className="absolute right-2 !rounded-full bg-white p-1">
+                      <AntDesign name="checkcircle" size={18} color={colors.blue.Text} />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
           {selectedTab.id === tabMenu[0].id && (
             <View>
@@ -100,7 +102,7 @@ const workSchedule = () => {
           )}
 
           {selectedTab.id === tabMenu[1].id && (
-            <Animated.View entering={FadeInDown.duration(1000).springify()}>
+            <Animated.View className="p-6" entering={FadeInDown.duration(1000).springify()}>
               <Calendar
                 onDayPress={(day) => {
                   console.log(day);
