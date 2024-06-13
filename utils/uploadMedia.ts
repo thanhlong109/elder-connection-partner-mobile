@@ -15,7 +15,7 @@ export interface uploadFilesProps {
   floderName: string;
   onUploadStart?: () => void;
   onUploading?: (uploadStatus: UploadingStatus) => void;
-  onUploadSucess?: (url: string) => void;
+  onUploadSucess?: (urlList: string[]) => void;
   onUploadFailed?: (error: StorageError | unknown) => void;
 }
 
@@ -37,7 +37,7 @@ export const uploadFiles = async ({
     let totalBytesTransferred = 0;
     let totalBytes = 0;
     const bytesTransferredByTask: { [key: string]: number } = {};
-
+    const urlList: string[] = [];
     // Calculate the total bytes of all images
     for (const image of images) {
       const response = await fetch(image.uri);
@@ -78,7 +78,10 @@ export const uploadFiles = async ({
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          onUploadSucess?.(downloadURL);
+          urlList.push(downloadURL);
+          if (urlList.length === images.length) {
+            onUploadSucess?.(urlList);
+          }
           console.log('File available at', downloadURL);
         }
       );
