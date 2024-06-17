@@ -12,15 +12,16 @@ import ActionItem from '~/components/ActionItem';
 import { images } from '~/constants/images';
 import LoadingModel from '~/components/LoadingModel';
 import ErrorModel from '~/components/ErrorModel';
+import { PostStatus } from '~/enums';
 
 const post = () => {
   const [selectedNav, setSelectedNav] = useState(1);
-  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  //const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const [posts, setposts] = useState<GetPostRespone[]>([]);
   //----------------------------- start call api get post ---------------------------//
 
   const { data, error, isError, isLoading, isSuccess, refetch } = useGetPostsQuery({
-    data: accountId,
+    data: PostStatus.Public,
     pageIndex: 0,
     pageSize: 30,
   });
@@ -67,7 +68,7 @@ const post = () => {
                 tintColor={'gray'}
               />
               <Text className="font-plight text-xl !text-black-100">
-                Bạn chưa đăng kí dịch vụ nào!
+                Hiện không có công việc nào!
               </Text>
             </View>
           )}

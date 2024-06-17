@@ -7,11 +7,14 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Text, View } from 'react-native-ui-lib';
 import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { images } from '~/constants/images';
-import { SignInRequest, SignInRespone } from '~/types/auth.type';
+import { JwtDecoded, SignInRequest, SignInRespone } from '~/types/auth.type';
 import { useDispatch } from 'react-redux';
 import { useSignInMutation } from '~/services/accountApi';
 import { setSignInRespone } from '~/slices/accountSlice';
 import LoadingModel from '~/components/LoadingModel';
+import { jwtDecode } from 'jwt-decode';
+import { Role } from '~/enums';
+import Toast from 'react-native-simple-toast';
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -46,8 +49,18 @@ const SignIn = () => {
           tranform.jwtToken = data.jwtToken as string;
           tranform.accountId = data.accountId as string;
         }
-        dispatch(setSignInRespone(tranform));
-        router.push('/home');
+        const decoded = jwtDecode<JwtDecoded>(tranform.jwtToken);
+        if (
+          decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === Role.CONNECTOR
+        ) {
+          dispatch(setSignInRespone(tranform));
+          router.push('/home');
+        } else {
+          Toast.show(
+            'Ứng dụng này chỉ được đăng nhập tài khoản connector, bạn vui lòng tải ứng dụng Elder Connection để đăng nhập nhé!',
+            Toast.LONG
+          );
+        }
       }
     }
   }, [isSuccess]);
