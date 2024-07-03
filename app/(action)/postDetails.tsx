@@ -1,22 +1,28 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { Button, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
 import colors from '~/constants/colors';
-import { PostStatus } from '~/enums';
+import { DialogType, PostStatus } from '~/enums';
 import { RootState } from '~/store';
 import {
   getStringEnum,
   getStringPostStatusEnum,
   getTimeFromServiceStringEnum,
 } from '~/utils/enumHelper';
-import { Position } from '~/types/post.type';
 import * as Linking from 'expo-linking';
+import { router } from 'expo-router';
+import { useApplyPostMutation } from '~/services/postApi';
+import LoadingModel from '~/components/LoadingModel';
+import CustomDialog from '~/components/CustomDialog';
+// import { useApplyPostMutation } from '~/services/postApi';
 
 const postDetails = () => {
   const action = useSelector((state: RootState) => state.postSlice.viewPostDetails);
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const [showDialong, setshowDialong] = useState(false);
   const {
     address,
     jobSchedule,
@@ -29,6 +35,7 @@ const postDetails = () => {
     postStatus,
     customerFirstName,
     customerLastName,
+    postId,
   } = action;
   console.log(serviceName);
   const getEndtime = (time: string) => {
@@ -37,14 +44,37 @@ const postDetails = () => {
     return `${t.toString().padStart(2, '0')}:${parts[1]}:${parts[2]}`;
   };
 
+  const [ApplyPost, { isError, isSuccess, isLoading, error }] = useApplyPostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setshowDialong(true);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
+  }, [isError]);
+
   const openGoogleMaps = () => {
-    const position: Position = JSON.parse(address.addressDetail);
-    const url = `https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}`;
+    const position: [number, number] = JSON.parse(address.addressDetail);
+    const url = `https://www.google.com/maps/search/?api=1&query=${position[1]},${position[0]}`;
     Linking.openURL(url).catch((err) => console.error('An error occurred', err));
   };
 
   return (
     <View>
+      <LoadingModel isloading={isLoading} />
+      <CustomDialog
+        visble={showDialong}
+        setVisible={setshowDialong}
+        type={isSuccess ? DialogType.SUCCESS : DialogType.ERROR}
+        showCloseButton
+        body={isSuccess ? 'Nhận việc thành công!' : 'Nhận việc thất bại!'}
+        onDismiss={() => router.back()}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="h-full w-full gap-10 px-5 pb-10">
           <View className="mt-6">
@@ -167,6 +197,16 @@ const postDetails = () => {
                 : postDescription}
             </Text>
           </Animated.View>
+          <Button
+            onPress={() => {
+              const aply = { connectorId: accountId, postId: postId };
+              console.log(aply);
+
+              ApplyPost(aply);
+            }}
+            backgroundColor={colors.primary}>
+            <Text className="font-medium !text-white">Nhận việc</Text>
+          </Button>
         </View>
       </ScrollView>
     </View>

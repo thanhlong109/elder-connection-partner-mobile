@@ -59,19 +59,22 @@ export interface SignInRespone {
   accountId: string;
 }
 
-export type AccountDestailsRespones = Pick<
-  Account,
-  | 'id'
-  | 'firstName'
-  | 'lastName'
-  | 'biography'
-  | 'profilePicture'
-  | 'sex'
-  | 'status'
-  | 'walletBalance'
-  | 'createAt'
-  | 'birthday'
->;
+export interface AccountDestailsRespones {
+  id: string;
+  firstName: string;
+  lastName: string;
+  biography: string;
+  accountEmail: string;
+  accountPhone: string;
+  profilePicture: string;
+  birthday: string;
+  sex: number;
+  status: number;
+  walletBalance: string;
+  createAt: string;
+  cccdNumber: string;
+  avgRating: any;
+}
 
 export type UpdateAccountRequest = Pick<
   Account,

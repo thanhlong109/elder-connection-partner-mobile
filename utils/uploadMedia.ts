@@ -17,6 +17,7 @@ export interface uploadFilesProps {
   onUploading?: (uploadStatus: UploadingStatus) => void;
   onUploadSucess?: (urlList: string[]) => void;
   onUploadFailed?: (error: StorageError | unknown) => void;
+  fileName?: string;
 }
 
 export interface UploadingStatus {
@@ -31,6 +32,7 @@ export const uploadFiles = async ({
   onUploadFailed,
   onUploadSucess,
   onUploading,
+  fileName,
 }: uploadFilesProps) => {
   try {
     const uploadTasks: UploadTask[] = [];
@@ -49,25 +51,25 @@ export const uploadFiles = async ({
     for (const image of images) {
       const response = await fetch(image.uri);
       const blob = await response.blob();
-      const fileName = image.fileName || new Date().getTime().toString();
-      const storageRef = ref(storage, connectorFolder + '/' + floderName + '/image/' + fileName);
+      const fileName1 = fileName ?? (image.fileName || new Date().getTime().toString());
+      const storageRef = ref(storage, connectorFolder + '/' + floderName + '/image/' + fileName1);
       const metadata = {
         contentType: image.type,
       };
       const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
       onUploadStart?.();
 
-      bytesTransferredByTask[fileName] = 0; // Initialize bytes transferred for this file
+      bytesTransferredByTask[fileName1] = 0; // Initialize bytes transferred for this file
 
       uploadTask.on(
         'state_changed',
         (snapshot) => {
           const bytesTransferred = snapshot.bytesTransferred;
-          const previousTransferred = bytesTransferredByTask[fileName];
+          const previousTransferred = bytesTransferredByTask[fileName1];
 
           // Update the total bytes transferred correctly
           totalBytesTransferred += bytesTransferred - previousTransferred;
-          bytesTransferredByTask[fileName] = bytesTransferred;
+          bytesTransferredByTask[fileName1] = bytesTransferred;
 
           const progress = (totalBytesTransferred / totalBytes) * 100;
           onUploading?.({ progress, state: snapshot.state });

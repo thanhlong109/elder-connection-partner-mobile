@@ -59,6 +59,9 @@ export const accountSlice = createSlice({
       state.account.sex = action.payload.sex;
       state.account.status = action.payload.status;
       state.account.walletBalance = action.payload.walletBalance;
+      state.account.accountEmail = action.payload.accountEmail;
+      state.account.accountPhone = action.payload.accountPhone;
+      state.account.cccdNumber = action.payload.cccdNumber;
     },
     setWalletRespone: (state, action: PayloadAction<GetWalletBalanceResponse>) => {
       state.account.walletBalance = action.payload.walletBalance + '';

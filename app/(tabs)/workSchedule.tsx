@@ -27,26 +27,26 @@ const fakeData: Task[] = [
     userName: 'Nguyễn Thành Long',
     avatarUrl:
       'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-    startTime: '18 giờ 30',
-    endTime: '23 giờ 30',
+    startTime: '10 giờ 30',
+    endTime: '18 giờ 30',
     status: TaskStatus.WAIT,
   },
   {
     userName: 'Nguyễn Thành Long',
-    startTime: '18 giờ 30',
+    startTime: '10 giờ 30',
     avatarUrl:
       'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-    endTime: '23 giờ 30',
+    endTime: '18 giờ 30',
     status: TaskStatus.DONE,
   },
-  {
-    userName: 'Nguyễn Thành Long',
-    startTime: '18 giờ 30',
-    avatarUrl:
-      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-    endTime: '23 giờ 30',
-    status: TaskStatus.CANCELLED,
-  },
+  // {
+  //   userName: 'Nguyễn Thành Long',
+  //   startTime: '18 giờ 30',
+  //   avatarUrl:
+  //     'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
+  //   endTime: '23 giờ 30',
+  //   status: TaskStatus.CANCELLED,
+  // },
 ];
 
 const workSchedule = () => {

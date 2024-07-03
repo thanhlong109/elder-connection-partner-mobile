@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Text, View } from 'react-native-ui-lib';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store';
 import { GetPostRespone } from '~/types/post.type';
 import { useGetPostsQuery } from '~/services/postApi';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -15,9 +13,9 @@ import ErrorModel from '~/components/ErrorModel';
 import { PostStatus } from '~/enums';
 
 const post = () => {
-  const [selectedNav, setSelectedNav] = useState(1);
   //const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const [posts, setposts] = useState<GetPostRespone[]>([]);
+  const [showErrorDialog, setshowErrorDialog] = useState(false);
   //----------------------------- start call api get post ---------------------------//
 
   const { data, error, isError, isLoading, isSuccess, refetch } = useGetPostsQuery({
@@ -27,15 +25,18 @@ const post = () => {
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && data && data.result) {
       setposts(data.result.items);
     }
   }, [isSuccess, data]);
 
   useEffect(() => {
     if (isError) {
-      alert(error);
       console.log('error call get post list', error);
+      if ('status' in error && error.status == 404) {
+      } else {
+        setshowErrorDialog(true);
+      }
     }
   }, [isError]);
 
@@ -43,7 +44,13 @@ const post = () => {
   return (
     <SafeAreaView>
       <LoadingModel isloading={isLoading} />
-      <ErrorModel isError={isError} onReload={() => refetch()} />
+      <ErrorModel
+        isError={showErrorDialog}
+        onReload={() => {
+          setshowErrorDialog(false);
+          refetch();
+        }}
+      />
       <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className="h-full">
         <View className="p-6">
           <Text className="font-psemibold text-2xl !text-white">Công việc khả dụng</Text>

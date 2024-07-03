@@ -1,3 +1,4 @@
+import { StringFormat } from 'firebase/storage';
 import { Address } from './address.type';
 import { CreateJobScheduleRequest, JobSchedule } from './jobSchedule.type';
 
@@ -82,4 +83,9 @@ export type CreatePostAndScheduleResponse = Pick<
 export interface Position {
   latitude: number;
   longitude: number;
+}
+
+export interface ApplyPostRequest {
+  postId: number;
+  connectorId: string;
 }

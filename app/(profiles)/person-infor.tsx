@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -23,6 +23,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import { clearToken } from '~/utils/auth';
 import { clearData } from '~/slices/accountSlice';
+import * as ImagePicker from 'expo-image-picker';
+import { useUpdateAccountMutation } from '~/services/accountApi';
+import { UploadingStatus, uploadFiles } from '~/utils/uploadMedia';
+import ImagePickerOption from '~/components/imagePickerOption';
+import UploadStatus from '~/components/UploadStatus';
+import { UpdateAccountRequest } from '~/types/auth.type';
+import LoadingModel from '~/components/LoadingModel';
+import ErrorModel from '~/components/ErrorModel';
 
 export interface PersonInfo {
   accountEmail: string;
@@ -38,6 +46,13 @@ const PersonInfor = () => {
   const dispatch = useDispatch();
   const account = useSelector((state: RootState) => state.accountSlice.account);
   const [verified, setVerified] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<UploadingStatus>({ progress: 0, state: 'none' });
+
+  //--------------------- start call api update acc -----------------------//
+
+  const [callUpdateAccount, { isError, isLoading, isSuccess, error }] = useUpdateAccountMutation();
+
+  //--------------------- end call api update acc -----------------------//
 
   const handleOnLogout = () => {
     clearToken();
@@ -46,9 +61,39 @@ const PersonInfor = () => {
     router.dismissAll();
   };
 
+  const updateAvatar = (avatar: ImagePicker.ImagePickerAsset) => {
+    if (avatar) {
+      uploadFiles({
+        images: [avatar],
+        fileName: 'avatar',
+        floderName: 'connectors/' + account.id,
+        onUploading: (uploadStatus) => setUploadStatus(uploadStatus),
+        onUploadSucess: (url) => {
+          setUploadStatus({ progress: 100, state: 'success' });
+          const u: UpdateAccountRequest = {
+            biography: account.biography,
+            birthday: account.birthDate,
+            firstName: account.firstName,
+            id: account.id,
+            lastName: account.lastName,
+            profilePicture: url[0],
+            sex: account.sex,
+          };
+          callUpdateAccount(u);
+        },
+        onUploadFailed: (err) => {
+          //alert(err);
+          setUploadStatus({ ...uploadStatus, state: 'error' });
+        },
+      });
+    }
+  };
+
   return (
     <SafeAreaView>
+      <LoadingModel isloading={isLoading} />
       <StatusBar backgroundColor="#4045A3" style="light" />
+      <UploadStatus uploadStatus={uploadStatus} />
       <LinearGradient colors={['#4045A3', '#FFF']} className=" h-full w-full">
         <View row className=" items-center justify-between p-6">
           <TouchableOpacity
@@ -74,6 +119,17 @@ const PersonInfor = () => {
                     uri: account.profilePicture,
                   }}
                   autoColorsConfig={{ defaultColor: colors.gray.F2 }}
+                  customRibbon={
+                    <ImagePickerOption
+                      onImageSelected={(e) => updateAvatar(e)}
+                      aspect={[1, 1]}
+                      buttonContent={
+                        <View className="!rounded-full border-[1px] border-gray-C5 !bg-white  p-4">
+                          <AntDesign name="camerao" size={24} color="black" />
+                        </View>
+                      }
+                    />
+                  }
                 />
               </View>
               {/* name */}
@@ -97,7 +153,7 @@ const PersonInfor = () => {
               <View row className="w-full justify-between !rounded-lg bg-gray-F2 p-6">
                 <Text className="font-pregular text-base">Đánh giá trung bình:</Text>
                 <View row className="items-center gap-1">
-                  <Text className="font-psemibold text-lg !text-blue-B1">5</Text>
+                  <Text className="font-psemibold text-lg !text-blue-B1">{5}</Text>
                   <AntDesign name="star" size={24} color={colors.yellow.Star} />
                 </View>
               </View>

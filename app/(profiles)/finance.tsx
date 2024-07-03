@@ -49,16 +49,8 @@ const Finance = () => {
                   title: 'Rút tiền',
                   isSend: false,
                   time: new Date(),
-                  transaction: '-800,000đ',
+                  transaction: '-500,000đ',
                   walletAmount: '200,000đ',
-                },
-                {
-                  id: 2,
-                  title: 'Nạp tiền vào ví ',
-                  isSend: true,
-                  time: new Date(),
-                  transaction: '+100,000đ',
-                  walletAmount: '1,000,000đ',
                 },
               ]}
               renderItem={({ index, item }) => (

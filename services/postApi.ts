@@ -1,7 +1,7 @@
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { PostStatus } from '~/enums';
-import { GetPostRespone } from '~/types/post.type';
+import { ApplyPostRequest, GetPostRespone } from '~/types/post.type';
 
 export const postApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -17,15 +17,14 @@ export const postApi = createApi({
       }),
       providesTags: ['post'],
     }),
-    applyPost: builder.mutation<
-      ApiResponse<PaggingResponse<GetPostRespone>>,
-      PaggingRequest<PostStatus>
-    >({
+    applyPost: builder.mutation<void, ApplyPostRequest>({
       query: (para) => ({
-        url: `api/posts/apply-post/20?connectorId=c4bbfb04-4c49-4092-820e-85ea85ca95df`,
+        url: `api/posts/apply-post/${para.postId}?connectorId=${para.connectorId}`,
+        method: 'POST',
       }),
+      invalidatesTags: ['post'],
     }),
   }),
   reducerPath: 'postApi',
 });
-export const { useGetPostsQuery } = postApi;
+export const { useGetPostsQuery, useApplyPostMutation } = postApi;
