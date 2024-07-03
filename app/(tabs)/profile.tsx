@@ -71,8 +71,9 @@ const profile = () => {
 
           <Animated.View entering={FadeInDown.delay(400).duration(1000).springify()}>
             <Card enableShadow className="p-6" elevation={5}>
+              <Text className="font-psemibold text-lg !text-blue-Text">Báo cáo tuần</Text>
               {/* <View row className="justify-between">
-                <Text className="font-psemibold text-lg !text-blue-Text">Báo cáo tuần</Text>
+                
                 <TouchableOpacity
                   onPress={() => router.push('weeklyReport')}
                   className=" rounded-full bg-secondary px-4 py-1">

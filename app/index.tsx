@@ -3,6 +3,7 @@ import { Link, router } from 'expo-router';
 import { useEffect } from 'react';
 import { Image, Text } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
@@ -26,8 +27,8 @@ export default function Home() {
   }, []);
   return (
     <>
-      <Container>
-        <View animated className="h-full items-center justify-around bg-white px-8 py-6">
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
+        <View className="max-h-[80%] flex-1 items-center gap-16 bg-white px-8 py-6">
           <Animated.View
             entering={FadeInUp.duration(2000).springify()}
             className="h-[150px] w-[150px] items-center justify-center rounded-full bg-primary shadow-lg">
@@ -66,7 +67,7 @@ export default function Home() {
             </Animated.View>
           </View>
         </View>
-      </Container>
+      </SafeAreaView>
     </>
   );
 }

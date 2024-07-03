@@ -78,6 +78,7 @@ const PersonInfor = () => {
             lastName: account.lastName,
             profilePicture: url[0],
             sex: account.sex,
+            phoneNumber: account.accountPhone,
           };
           callUpdateAccount(u);
         },

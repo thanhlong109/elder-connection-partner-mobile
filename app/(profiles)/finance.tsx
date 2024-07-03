@@ -1,18 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, Text, View } from 'react-native-ui-lib';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, Image, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
-import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome6 } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { formatNumberToMoney } from '~/utils/formater';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { useGetTransactionHistoryQuery } from '~/services/accountApi';
 import Transaction from '~/components/Transaction';
+import LoadingModel from '~/components/LoadingModel';
+import { images } from '~/constants/images';
 
 const Finance = () => {
+  const walletBalance = useSelector((state: RootState) => state.accountSlice.account.walletBalance);
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+
+  //-------------------- call api get transaction history ------------------------------//
+
+  const {
+    data: transactionData,
+    isLoading: isGetTransactionLoading,
+    isError: isGetTransactionError,
+    error: transactionError,
+  } = useGetTransactionHistoryQuery(accountId);
+
+  useEffect(() => {
+    if (isGetTransactionError) {
+      console.log('error load balance:', transactionError);
+      //alert('Lỗi không thể load lịch sử giao dịch!');
+    }
+  }, [isGetTransactionError]);
+
+  //-------------------- end call api get transaction history ------------------------------//
   return (
     <SafeAreaView>
+      <LoadingModel isloading={isGetTransactionLoading} />
       <StatusBar backgroundColor="#4045A3" style="light" />
       <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className=" h-full w-full">
         <View row className=" items-center justify-between p-6">
@@ -29,7 +56,9 @@ const Finance = () => {
         <View className="gap-6 p-6">
           <Card className="gap-6 p-6" center backgroundColor="#fff">
             <Text className="w-full font-pmedium text-base ">Tài khoản chính </Text>
-            <Text className="font-psemibold text-xl !text-blue-B1">100,000,000đ</Text>
+            <Text className="font-psemibold text-xl !text-blue-B1">
+              {formatNumberToMoney(parseFloat(walletBalance ?? '0'))} đ
+            </Text>
             <View row className="w-full justify-between gap-6">
               <Button backgroundColor={colors.blue.B1} className="gap-2">
                 <FontAwesome6 name="circle-dollar-to-slot" size={18} color="#fff" />
@@ -43,16 +72,7 @@ const Finance = () => {
           </Card>
           <Card>
             <FlatList
-              data={[
-                {
-                  id: 1,
-                  title: 'Rút tiền',
-                  isSend: false,
-                  time: new Date(),
-                  transaction: '-500,000đ',
-                  walletAmount: '200,000đ',
-                },
-              ]}
+              data={transactionData?.result.items ?? []}
               renderItem={({ index, item }) => (
                 <Animated.View
                   entering={FadeInDown.delay(index * 200)
@@ -60,15 +80,23 @@ const Finance = () => {
                     .springify()}
                   key={index}>
                   <Transaction
-                    isSend={item.isSend}
-                    time={item.time}
-                    title={item.title}
-                    transaction={item.transaction}
-                    walletAmount={item.walletAmount}
-                    containerStyle={index % 2 == 0 ? 'bg-white' : 'bg-[#EFFBFA]'}
+                    transaction={item}
+                    containerStyle={index % 2 == 0 ? '!bg-white' : '!bg-[#EFFBFA]'}
                   />
                 </Animated.View>
               )}
+              ListEmptyComponent={
+                <View className="flex-1 items-center justify-center">
+                  <Image
+                    source={images.icons.empty2}
+                    className="h-[70px] w-[70px]"
+                    resizeMode="contain"
+                  />
+                  <Text className="mt-2 font-pregular text-lg text-gray-600">
+                    Bạn chưa có giao dịch nào
+                  </Text>
+                </View>
+              }
               ListHeaderComponent={() => (
                 <View className="mt-4 gap-6 bg-white p-4">
                   <Text className=" font-psemibold text-base uppercase !text-blue-B1" center>

@@ -76,10 +76,16 @@ export interface AccountDestailsRespones {
   avgRating: any;
 }
 
-export type UpdateAccountRequest = Pick<
-  Account,
-  'id' | 'firstName' | 'lastName' | 'sex' | 'biography' | 'profilePicture' | 'birthday'
->;
+export interface UpdateAccountRequest {
+  firstName: string;
+  lastName: string;
+  sex: number;
+  biography: string;
+  phoneNumber: string;
+  profilePicture: string;
+  birthday: string;
+  id: string;
+}
 
 export type GetWalletBalanceResponse = Pick<
   Account,

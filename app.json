@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "elder-connection-partner-mobile",
+    "name": "Elder Connector",
     "slug": "elder-connection-partner-mobile",
     "version": "1.0.0",
     "scheme": "elder-connection-partner-mobile",
@@ -37,10 +37,10 @@
       "tsconfigPaths": true
     },
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/favicon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -50,7 +50,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.thanhlong109.elderconnectionpartnermobile"
