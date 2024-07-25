@@ -5,7 +5,7 @@ import { SignInRespone } from '~/types/auth.type';
 import { saveToken } from '~/utils/auth';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://elderconnectionwebapp.azurewebsites.net/',
+  baseUrl: 'https://elderconnect.azurewebsites.net/',
   prepareHeaders: async (headers, { getState }) => {
     const token = await AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
     if (token) {

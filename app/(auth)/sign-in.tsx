@@ -23,7 +23,7 @@ const SignIn = () => {
     accountPassword: '',
   });
   const [eror, seteror] = useState('');
-  const [signIn, { isError, isLoading, isSuccess, data }] = useSignInMutation();
+  const [signIn, { isError, isLoading, isSuccess, data, error }] = useSignInMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -68,6 +68,7 @@ const SignIn = () => {
   useEffect(() => {
     if (isError) {
       seteror('Tên đăng nhập hoặc mật khẩu không đúng!');
+      console.log(error);
     }
   }, [isError]);
 
