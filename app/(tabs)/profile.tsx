@@ -86,11 +86,11 @@ const profile = () => {
                   style={{ justifyContent: 'space-between' }}
                   className="w-full !justify-between">
                   <Text className="font-pregular text-base">Thu nhập trong tuần này</Text>
-                  <Text className="font-psemibold text-base !text-secondary">0 đ</Text>
+                  <Text className="font-psemibold text-base !text-secondary">560,000 đ</Text>
                 </View>
                 <View row className="w-full !justify-between">
                   <Text className="font-pregular text-base">Số giờ đã hoàn thành</Text>
-                  <Text className="font-psemibold text-base !text-secondary">0 giờ</Text>
+                  <Text className="font-psemibold text-base !text-secondary">4 giờ</Text>
                 </View>
               </View>
             </Card>

@@ -38,40 +38,47 @@ const Finance = () => {
 
   //-------------------- end call api get transaction history ------------------------------//
   return (
-    <SafeAreaView>
+    <SafeAreaView className="h-full max-h-screen">
       <LoadingModel isloading={isGetTransactionLoading} />
       <StatusBar backgroundColor="#4045A3" style="light" />
-      <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className=" h-full w-full">
-        <View row className=" items-center justify-between p-6">
-          <TouchableOpacity
-            onPress={() => router.back()}
-            className="h-[48px] w-[48px] items-center justify-center rounded-xl bg-[#858DCB]">
-            <AntDesign name="left" size={30} color="#fff" />
-          </TouchableOpacity>
-          <Text className="font-pbold text-xl !text-white ">Tài chính</Text>
-          <TouchableOpacity className="h-[48px] w-[48px] items-center justify-center rounded-xl bg-[#858DCB]">
-            <AntDesign name="questioncircleo" size={30} color="#fff" />
-          </TouchableOpacity>
-        </View>
-        <View className="gap-6 p-6">
-          <Card className="gap-6 p-6" center backgroundColor="#fff">
-            <Text className="w-full font-pmedium text-base ">Tài khoản chính </Text>
-            <Text className="font-psemibold text-xl !text-blue-B1">
-              {formatNumberToMoney(parseFloat(walletBalance ?? '0'))} đ
-            </Text>
-            <View row className="w-full justify-between gap-6">
-              <Button backgroundColor={colors.blue.B1} className="gap-2">
-                <FontAwesome6 name="circle-dollar-to-slot" size={18} color="#fff" />
-                <Text className="font-psemibold text-base !text-white">Nạp tiền</Text>
-              </Button>
-              <Button backgroundColor={colors.red.R1} className="gap-2">
-                <FontAwesome6 name="circle-dollar-to-slot" size={18} color="#fff" />
-                <Text className="font-psemibold text-base !text-white">Rút tiền</Text>
-              </Button>
+      <LinearGradient colors={['#4045A3', '#FFF', '#FFF']} className="flex h-full">
+        <View className="flex-1">
+          <View row className=" items-center justify-between p-6">
+            <TouchableOpacity
+              onPress={() => router.back()}
+              className="h-[48px] w-[48px] items-center justify-center rounded-xl bg-[#858DCB]">
+              <AntDesign name="left" size={30} color="#fff" />
+            </TouchableOpacity>
+            <Text className="font-pbold text-xl !text-white ">Tài chính</Text>
+            <TouchableOpacity className="h-[48px] w-[48px] items-center justify-center rounded-xl bg-[#858DCB]">
+              <AntDesign name="questioncircleo" size={30} color="#fff" />
+            </TouchableOpacity>
+          </View>
+          <View className="flex flex-1 gap-6 p-6">
+            <Card className="gap-6 p-6" center backgroundColor="#fff">
+              <Text className="w-full font-pmedium text-base ">Tài khoản chính </Text>
+              <Text className="font-psemibold text-xl !text-blue-B1">
+                {formatNumberToMoney(parseFloat(walletBalance ?? '0'))} đ
+              </Text>
+              <View row className="w-full justify-between gap-6">
+                <Button backgroundColor={colors.blue.B1} className="gap-2">
+                  <FontAwesome6 name="circle-dollar-to-slot" size={18} color="#fff" />
+                  <Text className="font-psemibold text-base !text-white">Nạp tiền</Text>
+                </Button>
+                <Button backgroundColor={colors.red.R1} className="gap-2">
+                  <FontAwesome6 name="circle-dollar-to-slot" size={18} color="#fff" />
+                  <Text className="font-psemibold text-base !text-white">Rút tiền</Text>
+                </Button>
+              </View>
+            </Card>
+            <View className="mt-4 gap-6 rounded-lg bg-white px-4 pt-6">
+              <Text className=" font-psemibold text-base uppercase !text-blue-B1" center>
+                Giao dịch
+              </Text>
+              <View className="h-[1px] w-full bg-gray-C5" />
             </View>
-          </Card>
-          <Card>
             <FlatList
+              className="flex-1 rounded-lg bg-white px-2 pb-2"
               data={transactionData?.result.items ?? []}
               renderItem={({ index, item }) => (
                 <Animated.View
@@ -97,16 +104,8 @@ const Finance = () => {
                   </Text>
                 </View>
               }
-              ListHeaderComponent={() => (
-                <View className="mt-4 gap-6 bg-white p-4">
-                  <Text className=" font-psemibold text-base uppercase !text-blue-B1" center>
-                    Giao dịch
-                  </Text>
-                  <View className="h-[1px] w-full bg-gray-C5" />
-                </View>
-              )}
             />
-          </Card>
+          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>

@@ -1,7 +1,7 @@
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { PostStatus } from '~/enums';
-import { ApplyPostRequest, GetPostRespone } from '~/types/post.type';
+import { ApplyPostRequest, GetConnectorPost, GetPostRespone } from '~/types/post.type';
 
 export const postApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -24,7 +24,15 @@ export const postApi = createApi({
       }),
       invalidatesTags: ['post'],
     }),
+    getConnectorPost: builder.query<ApiResponse<PaggingResponse<GetConnectorPost>>,string>({
+      query: (para) => ({
+        url: `api/jobschedules/get-job-schedule-by-connector-id/${para}?pageIndex=0&pageSize=30`,
+        method: 'GET',
+      }),
+      providesTags: ['post'],
+    }),
+    
   }),
   reducerPath: 'postApi',
 });
-export const { useGetPostsQuery, useApplyPostMutation } = postApi;
+export const { useGetPostsQuery, useApplyPostMutation,useGetConnectorPostQuery } = postApi;

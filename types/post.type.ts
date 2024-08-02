@@ -23,6 +23,28 @@ export interface Post {
   salaryAfterWork: number;
 }
 
+export interface Post2{
+  postId: number
+  serviceId: number
+  jobScheduleId: number
+  customerId: string
+  addressId: number
+  isPriorityFavoriteConnector: boolean
+  postDescription: string
+  title: string
+  postStatus: number
+  startTime: string
+  createAt: string
+  updateAt: string
+  price: number
+  salaryAfterWork: number
+  address: any
+  customer: any
+  jobSchedule: any
+  service: any
+  serviceFeedbacks: any[]
+}
+
 export type CreatePostRequest = Pick<
   Post,
   | 'addressId'
@@ -59,6 +81,34 @@ export type GetPostRespone = Pick<
   | 'price'
   | 'salaryAfterWork'
 >;
+
+export interface GetConnectorPost{
+  jobScheduleId: number
+  connectorId: string
+  connectorFirstName: string
+  connectorLastName: string
+  startDate: string
+  endDate: string
+  description: string
+  locationWork: string
+  listDayWork: string
+  taskProcess: number
+  onTask: boolean
+  post: Post2
+  tasks: Task[]
+}
+
+export interface Task {
+  taskId: number
+  jobScheduleId: number
+  workDateAt: string
+  taskStatus: number
+  createAt: string
+  completeDate: string
+  taskUpdateAt: string
+  taskUpdateDescription: any
+}
+
 export type CreatePostAndScheduleResponse = Pick<
   Post,
   | 'postId'

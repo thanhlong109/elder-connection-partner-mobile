@@ -1,61 +1,78 @@
-import { AntDesign } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateData } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
-import TaskItem from '~/components/TaskItem';
-import { TaskStatus } from '~/enums';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { useGetConnectorPostQuery } from '~/services/postApi';
+import ConnectorPost from '~/components/ConnectorPost';
+import { GetConnectorPost } from '~/types/post.type';
+import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking';
+import { LinearGradient } from 'expo-linear-gradient';
+import { AntDesign } from '@expo/vector-icons';
+import { images } from '~/constants/images';
+import TaskDetailsModel, { TaskDetailsModelProps } from '~/components/TaskDetailsModel';
 
 const tabMenu = [
-  { id: 1, title: 'Hôm nay' },
-  { id: 2, title: 'Tháng này' },
-];
-export interface Task {
-  userName: string;
-  avatarUrl: string;
-  endTime: string;
-  startTime: string;
-  status: TaskStatus;
-}
-const fakeData: Task[] = [
-  {
-    userName: 'Nguyễn Thành Long',
-    avatarUrl:
-      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-    startTime: '10 giờ 30',
-    endTime: '18 giờ 30',
-    status: TaskStatus.WAIT,
-  },
-  {
-    userName: 'Nguyễn Thành Long',
-    startTime: '10 giờ 30',
-    avatarUrl:
-      'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-    endTime: '18 giờ 30',
-    status: TaskStatus.DONE,
-  },
-  // {
-  //   userName: 'Nguyễn Thành Long',
-  //   startTime: '18 giờ 30',
-  //   avatarUrl:
-  //     'https://lh3.googleusercontent.com/ogw/AF2bZygU6ueqyuEIc4AIljcU5vim9mBJAZFqQDSQuWCxGHs43w=s64-c-mo',
-  //   endTime: '23 giờ 30',
-  //   status: TaskStatus.CANCELLED,
-  // },
+  { id: 1, title: 'Đã nhận' },
+  { id: 2, title: 'Xem lịch' },
 ];
 
-const workSchedule = () => {
+export type CustomMarkedDate = MarkingProps & {
+  data?: GetConnectorPost;
+};
+
+export type CustomMarkedDates = {
+  [date: string]: CustomMarkedDate;
+};
+export interface TaskDetails {
+  visible: boolean;
+  data?: GetConnectorPost;
+}
+const WorkSchedule: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(tabMenu[0]);
-  const [marked, setMarked] = useState<MarkedDates>({
-    ['2024-06-11']: { selected: true, marked: true, selectedColor: 'orange' },
-    ['2024-06-10']: { selected: true, marked: true, selectedColor: 'orange' },
-    ['2024-06-07']: { selected: true, marked: true, selectedColor: 'orange' },
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const [items, setItems] = useState<GetConnectorPost[]>([]);
+  const [marked, setMarked] = useState<CustomMarkedDates>({});
+  const [task, settask] = useState<TaskDetails>({
+    visible: false,
   });
+
+  const { data, isSuccess } = useGetConnectorPostQuery(accountId);
+
+  useEffect(() => {
+    if (isSuccess && data && data.result) {
+      setItems(data.result.items);
+      setMarked(parseDates(data.result.items));
+    }
+  }, [isSuccess, data]);
+
+  const parseDates = (schedules: GetConnectorPost[]): CustomMarkedDates => {
+    return schedules.reduce((acc: CustomMarkedDates, schedule: GetConnectorPost) => {
+      const dates = schedule.listDayWork.split('|');
+      dates.forEach((date: string) => {
+        acc[date] = {
+          selected: true,
+          marked: true,
+          selectedColor: new Date() < new Date(date) ? 'orange' : 'green',
+          data: schedule,
+        };
+      });
+      return acc;
+    }, {});
+  };
+
+  const onDayPress = (day: DateData) => {
+    const date = day.dateString;
+    if (marked[date]?.data) {
+      settask({ visible: true, data: marked[date]?.data });
+    }
+  };
+
   return (
     <View backgroundColor="#4045A3">
       <SafeAreaView>
@@ -86,16 +103,30 @@ const workSchedule = () => {
             </View>
           </View>
           {selectedTab.id === tabMenu[0].id && (
-            <View>
+            <View className="flex-1">
               <FlatList
-                data={fakeData}
+                data={items}
+                style={{ flex: 1 }}
                 renderItem={({ item, index }) => (
                   <Animated.View
-                    entering={FadeInDown.delay(index * 200)
+                    entering={FadeInDown.delay(index * 150)
                       .duration(1000)
                       .springify()}>
-                    <TaskItem item={item} />
+                    <ConnectorPost item={item} key={index} />
                   </Animated.View>
+                )}
+                ListEmptyComponent={() => (
+                  <View flex center>
+                    <Image
+                      source={images.icons.empty2}
+                      className="mt-[100px] h-[100px] w-[100px]"
+                      resizeMode="contain"
+                      tintColor={'gray'}
+                    />
+                    <Text className="font-plight text-xl !text-black-100">
+                      Hiện không có công việc nào!
+                    </Text>
+                  </View>
                 )}
               />
             </View>
@@ -103,12 +134,8 @@ const workSchedule = () => {
 
           {selectedTab.id === tabMenu[1].id && (
             <Animated.View className="p-6" entering={FadeInDown.duration(1000).springify()}>
-              <Calendar
-                onDayPress={(day) => {
-                  console.log(day);
-                }}
-                markedDates={marked}
-              />
+              <Calendar onDayPress={onDayPress} markedDates={marked as MarkedDates} />
+              <TaskDetailsModel data={task.data} visible={task.visible} setdata={settask} />
             </Animated.View>
           )}
         </LinearGradient>
@@ -117,4 +144,4 @@ const workSchedule = () => {
   );
 };
 
-export default workSchedule;
+export default WorkSchedule;
